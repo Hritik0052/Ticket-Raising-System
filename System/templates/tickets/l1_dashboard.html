@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">L1 Staff Dashboard</h2>
+
+    <div class="row">
+        <!-- Pending Tickets -->
+        <div class="col-md-8">
+        <h4 class="mb-3">Pending Tickets</h4>
+        {% if pending_tickets %}
+            <table class="table table-striped table-hover shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Ticket ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col" class="text-center">View Ticket</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in pending_tickets %}
+                    <tr>
+                        <td>{{ ticket.ticket_id }}</td>
+                        <td>{{ ticket.sender_name }}
+                        <td>{{ ticket.subject }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'tickets:ticket_detail' ticket.ticket_id %}" class="btn btn-info btn-sm">View</a>
+                        </td>
+                        <!-- Update Status column -->
+                        <td class="text-center">
+                            <a href="{% url 'tickets:verify_ticket' ticket.ticket_id %}?action=verify" class="btn btn-success btn-sm me-2">Verify</a>
+                            <a href="{% url 'tickets:verify_ticket' ticket.ticket_id %}?action=reject" class="btn btn-danger btn-sm">Reject</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">No pending tickets.</p>
+        {% endif %}
+        </div>
+
+
+        <!-- Processed Tickets -->
+        <div class="col-md-4">
+            <h4 class="mb-3">Processed Tickets</h4>
+            {% if processed_tickets %}
+                {% for ticket in processed_tickets %}
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">Ticket ID: {{ ticket.ticket_id }}</h6>
+                            <p class="card-text">
+                                <strong>Subject:</strong> {{ ticket.subject }}<br>
+                                <strong>Status:</strong>
+                                <span class="badge {% if ticket.status == 'verified' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ ticket.status|capfirst }}
+                                </span><br>
+                                <small class="text-muted">Updated: {{ ticket.created_at|date:"M d, Y H:i" }}</small>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% if more_processed_exists %}
+                    <a href="{% url 'tickets:processed_tickets' %}" class="btn btn-primary w-100 mt-2">View More</a>
+                {% endif %}
+            {% else %}
+                <p class="text-muted">No processed tickets.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

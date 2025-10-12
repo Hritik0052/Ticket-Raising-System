@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="text-center mb-4">Create Staff Member</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- First & Last Name Row -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter first name" required>
+                        </div>
+                        <div class="col">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter last name" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+
+                     <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Enter email" required>
+                    </div>
+
+                    <!-- Mobile -->
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile</label>
+                        <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Enter mobile number" required>
+                    </div>
+                    
+                    <!-- Date of Joining -->
+                    <div class="mb-3">
+                        <label for="date_joined" class="form-label">Date of Joining</label>
+                        <input type="date" name="date_joined" id="date_joined" class="form-control" value="{{ today|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select name="role" id="role" class="form-select" required>
+                            <option value="staff_l1">Staff L1</option>
+                            <option value="staff_l2">Staff L2</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <select name="department" id="department" class="form-select" required>
+                            {% for dept in departments %}
+                                <option value="{{ dept.id }}">{{ dept.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Create Staff</button>
+                </form>
+            </div>
+            <div class="text-center mt-3">
+                <a href="{% url 'superadmin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

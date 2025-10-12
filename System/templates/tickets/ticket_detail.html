@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Ticket Details</h2>
+
+    <!-- Ticket Card -->
+    <div class="card mb-4 shadow-sm p-3">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h5>Ticket ID: {{ ticket.ticket_id }}</h5>
+                <p><strong>Sender:</strong> {{ ticket.sender_name }} | 
+                   <strong>Email:</strong> {{ ticket.email }} | 
+                   <strong>Mobile:</strong> {{ ticket.mobile_no }}</p>
+                <p><strong>Department:</strong> {{ ticket.department.name }} | 
+                   <strong>Sub-department:</strong> {{ ticket.sub_department.name }}</p>
+                <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+                <p><strong>Description:</strong> {{ ticket.description }}</p>
+                {% if attachments %}
+                <p><strong>Attachments:</strong></p>
+                <ul>
+                    {% for attachment in attachments %}
+                        <li>
+                            <a href="{{ attachment.file.url }}" target="_blank">
+                                link
+                            </a>
+                            <small>(Uploaded: {{ attachment.uploaded_at|date:"Y-m-d H:i" }})</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p><em>No attachments available.</em></p>
+                {% endif %}
+
+            </div>
+            <div class="text-end">
+                <span class="badge 
+                    {% if ticket.status == 'pending' %} bg-warning fs-6
+                    {% elif ticket.status == 'verified' %} bg-success fs-6
+                    {% elif ticket.status == 'rejected' %} bg-danger fs-6
+                    {% elif ticket.status == 'escalated' %} bg-danger fs-6
+                    {% elif ticket.status == 'in_progress' %} bg-info fs-6
+                    {% elif ticket.status == 'closed' %} bg-secondary fs-6
+                    {% endif %}">
+                    {{ ticket.status|capfirst }}
+                </span>
+                <p class="text-muted mt-2">
+                    <strong>Created at:</strong> {{ ticket.created_at|date:"M d, Y, h:i a" }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket History -->
+    <h4 class="fw-bold">Ticket History</h4>
+    {% if ticket.history.all %}
+        <hr>
+        <h6 class="fw-bold">Ticket History</h6>
+        <ul class="list-group list-group-flush">
+            {% for h in ticket.history.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div>
+                    <strong>Status:</strong> {{ h.status|capfirst }}<br>
+                    <strong>Updated by:</strong> 
+                    {% if h.updated_by %}
+                        {{ h.updated_by.username }}
+                    {% else %}
+                        N/A
+                    {% endif %}<br>
+                    <strong>Remarks:</strong> {{ h.remarks }}
+                </div>
+                <small class="text-muted">{{ h.updated_at|date:"M d, Y, h:i a" }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted mb-0">
+            No History of this Ticket.
+        </p>    
+    {% endif %}
+
+    <div class="text-center">
+        <a href="javascript:history.back()" class="btn btn-secondary">Back to previous Page</a>
+    </div>
+</div>
+{% endblock %}

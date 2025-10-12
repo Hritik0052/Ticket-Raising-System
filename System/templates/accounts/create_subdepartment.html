@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="text-center mb-4">Create Sub-Department</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <select name="department" id="department" class="form-select" required>
+                            {% for dept in departments %}
+                                <option value="{{ dept.id }}">{{ dept.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Sub-Department Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter sub-department name" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Create Sub-Department</button>
+                </form>
+            </div>
+            <div class="text-center mt-3">
+                <a href="{% url 'superadmin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

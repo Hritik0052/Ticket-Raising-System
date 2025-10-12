@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Raise a Ticket</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" class="card p-4 shadow-sm bg-white rounded" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Sender Name (optional) -->
+                <div class="mb-3">
+                    <label for="sender_name" class="form-label">Your Name (optional)</label>
+                    <input type="text" name="sender_name" class="form-control" placeholder="Enter your name">
+                </div>
+
+                <!-- Mobile Number (optional) -->
+                <div class="mb-3">
+                    <label for="mobile_no" class="form-label">Mobile Number (optional)</label>
+                    <input type="text" name="mobile_no" class="form-control" placeholder="Enter your mobile number">
+                </div>
+
+                <!-- Department Selection -->
+                <div class="mb-3">
+                    <label for="department" class="form-label">Select Department</label>
+                    <select name="department" id="department" class="form-select" required>
+                        <option value="" disabled selected>Choose a department</option>
+                        {% for dept in departments %}
+                            <option value="{{ dept.id }}">{{ dept.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Sub-department Selection -->
+                <div class="mb-3">
+                    <label for="sub_department" class="form-label">Select Sub-Department</label>
+                    <select name="sub_department" id="sub_department" class="form-select">
+                        <option value="" disabled selected>Choose a sub-department</option>
+                    </select>
+                </div>
+
+
+                <!-- Subject -->
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" name="subject" class="form-control" placeholder="Enter Subject" required>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="5" placeholder="Describe your issue"></textarea>
+                </div>
+
+                <!-- Attachment with tickets -->
+                <div class="mb-3">
+                    <label>Attachments</label>
+                    <input type="file" name="attachments" class="form-control" multiple>
+                    <small class="text-muted">You can select multiple files.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Submit Ticket</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script file here -->
+    <script src="{% static 'Scripts/get-subs.js' %}"></script>
+</div>
+{% endblock %}

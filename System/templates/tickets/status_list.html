@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Your Tickets</h2>
+
+    {% for ticket in tickets %}
+    <div class="card mb-4 shadow-sm p-3">
+        <div class="d-flex justify-content-between">
+            <div>
+                <h5>Ticket ID: {{ ticket.ticket_id }}</h5>
+                <p><strong>Sender:</strong> {{ ticket.sender_name }} | <strong>Email:</strong> {{ ticket.email }} | <strong>Mobile:</strong> {{ ticket.mobile_no }}</p>
+                <p><strong>Department:</strong> {{ ticket.department.name }} | <strong>Sub-department:</strong> {{ ticket.sub_department.name }}</p>
+                <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+                <p><strong>Description:</strong> {{ ticket.description }}</p>
+                {% if ticket.attachment %}
+                    <p><strong>Attachment:</strong> <a href="{{ ticket.attachment.url }}" target="_blank">View File</a></p>
+                {% endif %}
+            </div>
+            <div class="text-end">
+                <span class="badge 
+                    {% if ticket.status == 'pending' %} bg-warning fs-5
+                    {% elif ticket.status == 'verified' %} bg-success fs-5
+                    {% elif ticket.status == 'rejected' %} bg-danger fs-5
+                    {% elif ticket.status == 'in_progress' %} bg-info fs-5
+                    {% elif ticket.status == 'closed' %} bg-secondary fs-5
+                    {% endif %}">
+                    {{ ticket.status|capfirst }}
+                </span>
+                <p class="text-muted">{{ ticket.created_at|date:"M d, Y, h:i a" }}</p>
+            </div>
+        </div>
+
+        {% if ticket.history.all %}
+        <hr>
+        <h6 class="fw-bold">Ticket History</h6>
+        <ul class="list-group list-group-flush">
+            {% for h in ticket.history.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div>
+                    <strong>Status:</strong> {{ h.status|capfirst }}<br>
+                    <strong>Updated by:</strong> 
+                    {% if h.updated_by %}
+                        {{ h.updated_by.username }}
+                    {% else %}
+                        N/A
+                    {% endif %}<br>
+                    <strong>Remarks:</strong> {{ h.remarks }}
+                </div>
+                <small class="text-muted">{{ h.updated_at|date:"M d, Y, h:i a" }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% empty %}
+        <p class="text-center">No tickets found.</p>
+    {% endfor %}
+
+    <div class="text-center">
+        <a href="{% url 'main_page' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Staff Member</title>
+    <style>
+        div { width: 400px; margin: auto; margin-top: 50px; }
+        p { font-size: 18px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Staff Member Details</h1>
+    <div>
+        <p><strong>Username:</strong> {{ staff.username }}</p>
+        <p><strong>Role:</strong> {{ staff.role }}</p>
+        <p><strong>Department:</strong> {{ staff.department.name }}</p>
+        <p><strong>Date Joined:</strong> {{ staff.date_joined|date:"Y-m-d H:i" }}</p>
+    </div>
+</body>
+</html>

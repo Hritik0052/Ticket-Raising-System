@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="d-flex align-items-center justify-content-center bg-light" style="min-height: 80vh;">
+    <div class="text-center">
+        <h1 class="fw-bold mb-4">
+            Welcome to Ticket Raising System
+        </h1>
+        <p class="lead text-muted mb-5">Easily raise tickets and check their status anytime.</p>
+        
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'request_otp' %}" class="btn btn-primary btn-lg px-4">Raise Ticket</a>
+            <a href="{% url 'tickets:check_status' %}" class="btn btn-outline-primary btn-lg px-4">Check Ticket Status</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

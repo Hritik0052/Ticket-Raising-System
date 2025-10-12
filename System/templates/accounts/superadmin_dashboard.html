@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+
+    <!-- Headline & Slogan -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">SuperAdmin Dashboard</h1>
+        <p class="text-muted">Empowering smooth operations with smart ticket management 🚀</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+                <h4 class="fw-bold">All Tickets</h4>
+                <p class="display-6 text-primary">{{ tickets.count }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+                <h4 class="fw-bold">Resolved Tickets</h4>
+                <p class="display-6 text-success">
+                    {% if resolved_tickets_count %}
+                        {{ resolved_tickets_count }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-4">
+                <h4 class="fw-bold">Departments</h4>
+                <p class="display-6 text-warning">{{ departments.count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <h3 class="mb-3">Quick Actions</h3>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 text-center">
+                <h5>Create Department</h5>
+                <p class="text-muted">Manage and organize departments</p>
+                <a href="{% url 'create_department' %}" class="btn btn-primary">Add Department</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 text-center">
+                <h5>Create Sub-department</h5>
+                <p class="text-muted">Add sub-units to departments</p>
+                <a href="{% url 'create_subdepartment' %}" class="btn btn-info">Add Sub-department</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3 text-center">
+                <h5>Create Staff Member</h5>
+                <p class="text-muted">Assign staff to departments</p>
+                <a href="{% url 'create_staff' %}" class="btn btn-success">Add Staff</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Departments -->
+    <h3 class="mb-3">Departments</h3>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for dept in departments|slice:":3" %}
+                    <li class="list-group-item">{{ dept.name }}</li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No departments available.</li>
+                {% endfor %}
+            </ul>
+
+            {% if departments|length > 3 %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'view_all_departments' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <!-- Staff Members -->
+    <h3 class="mb-3">Staff Members</h3>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for staff in staff_members|slice:":3" %}
+                    <li class="list-group-item">
+                        {{ staff.username }} - {{ staff.role }} - {{ staff.department.name }}
+                    </li>
+                   {% empty %}
+                    <li class="list-group-item text-muted">No staff members available.</li>
+                {% endfor %}
+            </ul>
+
+            {% if staff_members|length > 3 %}
+               <div class="text-end mt-2">
+                    <a href="{% url 'view_all_staff' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <!-- Tickets -->
+    <h3 class="mb-3">All Tickets</h3>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for ticket in tickets|slice:":3" %}
+                   <li class="list-group-item">
+                        <strong>{{ ticket.ticket_id }}</strong> - {{ ticket.subject }}
+                        <span class="badge 
+                           {% if ticket.status == 'pending' %} bg-warning
+                            {% elif ticket.status == 'verified' %} bg-success
+                            {% elif ticket.status == 'rejected' %} bg-danger
+                            {% elif ticket.status == 'escalated' %} bg-danger
+                            {% elif ticket.status == 'in_progress' %} bg-info
+                            {% elif ticket.status == 'closed' %} bg-secondary
+                            {% endif %}">
+                            {{ ticket.status|capfirst }}
+                       </span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No tickets available.</li>
+                {% endfor %}
+            </ul>
+
+           {% if tickets|length > 3 %}
+               <div class="text-end mt-2">
+                   <a href="{% url 'view_all_tickets' %}" class="btn btn-sm btn-outline-primary">View All</a>
+               </div>
+           {% endif %}
+        </div>
+    </div>
+
+    <!-- Back to Login -->
+    <div class="text-center">
+        <a href="{% url 'main_page' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
