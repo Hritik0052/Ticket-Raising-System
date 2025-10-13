@@ -8,6 +8,49 @@ from tickets.models import Ticket
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
+from django.shortcuts import  get_object_or_404
+
+
+def view_staff(request, pk):
+    staff = get_object_or_404(User, pk=pk)
+    return render(request, 'accounts/view_staff.html', {'staff': staff})
+
+def edit_staff(request, pk):
+    staff = get_object_or_404(User, pk=pk)
+    departments = Department.objects.all()
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        role = request.POST.get('role')
+        mobile = request.POST.get('mobile')
+        department_id = request.POST.get('department')
+        email = request.POST.get('email')
+
+        # Update the staff record
+        staff.username = username
+        staff.role = role
+        staff.mobile = mobile
+        staff.email = email
+
+        if department_id:
+            staff.department_id = department_id
+        else:
+            staff.department = None
+
+        staff.save()
+
+        messages.success(request, f"{staff.username}'s details updated successfully!")
+        return redirect('view_all_staff')  # change to your staff list URL name
+
+    return render(request, 'accounts/edit_staff.html', {
+        'staff': staff,
+        'departments': departments
+    })
+
+def delete_staff(request, pk):
+    staff = get_object_or_404(User, pk=pk)
+    staff.delete()
+    return redirect('view_all_staff')  # redirect back to your list page
 
 
 def home(request):

@@ -89,7 +89,7 @@
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                {% for staff in staff_members|slice:":3" %}
+                {% for staff in staff_members|slice:"32" %}
                     <li class="list-group-item">
                         {{ staff.username }} - {{ staff.role }} - {{ staff.department.name }}
                     </li>
@@ -98,7 +98,7 @@
                 {% endfor %}
             </ul>
 
-            {% if staff_members|length > 3 %}
+            {% if staff_members|length > 2 %}
                <div class="text-end mt-2">
                     <a href="{% url 'view_all_staff' %}" class="btn btn-sm btn-outline-primary">View All</a>
                 </div>

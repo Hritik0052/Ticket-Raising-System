@@ -1,19 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>View Staff Member</title>
-    <style>
-        div { width: 400px; margin: auto; margin-top: 50px; }
-        p { font-size: 18px; margin: 10px 0; }
-    </style>
-</head>
-<body>
-    <h1 style="text-align:center;">Staff Member Details</h1>
-    <div>
-        <p><strong>Username:</strong> {{ staff.username }}</p>
-        <p><strong>Role:</strong> {{ staff.role }}</p>
-        <p><strong>Department:</strong> {{ staff.department.name }}</p>
-        <p><strong>Date Joined:</strong> {{ staff.date_joined|date:"Y-m-d H:i" }}</p>
+{% extends 'base.html' %}
+{% block title %}View Staff{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+          <h4 class="mb-0">Staff Details</h4>
+        </div>
+        <div class="card-body">
+          <div class="mb-3 text-center">
+            <i class="fa-solid fa-user-circle fa-4x text-secondary mb-3"></i>
+            <h5 class="fw-bold text-dark mb-0">{{ staff.username }}</h5>
+            <small class="text-muted">({{ staff.role|title }})</small>
+          </div>
+
+          <hr>
+
+          <div class="mb-2">
+            <strong>Department:</strong>
+            <span class="text-muted">
+                {% if staff.department %}
+                    {{ staff.department.name }}
+                {% else %}
+                    Not Assigned
+                {% endif %}              
+            </span>
+          </div>
+
+          <div class="mb-2">
+            <strong>Mobile:</strong>
+            <span class="text-muted">{{ staff.mobile|default:"—" }}</span>
+          </div>
+
+          <div class="mb-2">
+            <strong>Email:</strong>
+            <span class="text-muted">{{ staff.email|default:"—" }}</span>
+          </div>
+
+          <div class="mt-4 text-center">
+            <a href="{% url 'edit_staff' staff.id %}" class="btn btn-outline-primary me-2">
+              <i class="fa-solid fa-pen-to-square me-1"></i> Edit
+            </a>
+            <a href="{% url 'view_all_staff' %}" class="btn btn-secondary">
+              <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
-</html>
+  </div>
+</div>
+{% endblock %}

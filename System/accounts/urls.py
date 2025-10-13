@@ -11,5 +11,8 @@ urlpatterns = [
     path("logout/", views.user_logout, name="logout"),
     path("superadmin/view_all_staff", views.view_all_staff, name='view_all_staff'),
     path("superadmin/view_all_tickets", views.view_all_tickets, name='view_all_tickets'),
-    path("superadmin/view_all_departments", views.view_all_departments, name='view_all_departments')
+    path("superadmin/view_all_departments", views.view_all_departments, name='view_all_departments'),
+    path('superadmin/view/<int:pk>/', views.view_staff, name='view_staff'),
+    path('superadmin/edit/<int:pk>/', views.edit_staff, name='edit_staff'),
+    path('superadmin/delete/<int:pk>/', views.delete_staff, name='delete_staff'),
 ]
