@@ -9,12 +9,19 @@
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">Name</th>
+                             <th scope="col">Ation</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for dept in all_departments %}
                             <tr>
                                 <td>{{ dept.name }}</td>
+                                <td>
+                                     <!-- Edit -->
+                                    <a href="{% url 'create_subdepartment' %}" class="text-decoration-none fs-5 me-2">
+                                        <i class="fa-solid fa-pen-to-square text-success" title="request.User,14" style="cursor: pointer;"></i>
+                                    </a>
+                                <td>
                             </tr>
                         {% endfor %}
                     </tbody>
