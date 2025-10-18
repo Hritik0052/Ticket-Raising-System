@@ -13,10 +13,10 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-            <div class="card p-5 shadow-sm bg-success text-white text-center rounded">
+            <div class="card p-5 shadow-sm bg-primary text-white text-center rounded">
                 <h2 class="mb-3">Ticket Submitted Successfully 🎉</h2>
                 <p class="lead">Your Ticket ID: <strong>{{ ticket_id }}</strong></p>
-                <a href="{% url 'main_page' %}" class="btn btn-light mt-4">Back to Home</a>
+                <a href="{% url 'main_page' %}" class="btn btn-light mt-4 fs-bold">Back to Home</a>
             </div>
         </div>
     </div>
